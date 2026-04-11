@@ -1,0 +1,119 @@
+import random
+
+def verificar_letra(palavra_secreta, letras_descobertas, letra_palpite):
+    """
+    Lógica modular: percorre a palavra e atualiza o progresso se a letra existir.
+    """
+    acerto = False
+    for i in range(len(palavra_secreta)):
+        if palavra_secreta[i] == letra_palpite:
+            letras_descobertas[i] = letra_palpite
+            acerto = True
+    return acerto
+
+def jogar_forca():
+    # Setup inicial do Júnior
+    palavras = ["teclado", "monitor", "software", "backend", "algoritmo"]
+    palavra_secreta = random.choice(palavras).lower()
+    letras_descobertas = ["_" for _ in palavra_secreta]
+    
+    tentativas_restantes = 6
+    letras_erradas = []
+
+    print("--- BEM-VINDO AO JOGO DA FORCA ---")
+
+    while tentativas_restantes > 0 and "_" in letras_descobertas:
+        print(f"\nPalavra: {' '.join(letras_descobertas)}")
+        print(f"Erros: {letras_erradas}")
+        print(f"Chances: {tentativas_restantes}")
+
+        chute = input("Qual letra você quer tentar? ").lower().strip()
+
+        # Validações rápidas
+        if len(chute) != 1 or not chute.isalpha():
+            print(">> Ei, digite apenas UMA letra!")
+            continue
+        
+        if chute in letras_descobertas or chute in letras_erradas:
+            print(f">> Você já tentou a letra '{chute}'. Tente outra!")
+            continue
+
+        # Usando a função modular que criamos
+        if verificar_letra(palavra_secreta, letras_descobertas, chute):
+            print(f"Boa! A letra '{chute}' está na palavra.")
+        else:
+            letras_erradas.append(chute)
+            tentativas_restantes -= 1
+            print(f"Xii... a letra '{chute}' não existe.")
+
+    # Mensagens de encerramento
+    if "_" not in letras_descobertas:
+        print(f"\nMandou bem! Você adivinhou: {palavra_secreta}")
+    else:
+        print("\n" + "!" * 20)
+        print("ACABOU SUAS CHANCES")
+        print(f"A palavra era: {palavra_secreta}")
+        print("!" * 20)
+
+if __name__ == "__main__":
+    jogar_forca()
+    import random
+
+def verificar_letra(palavra_secreta, letras_descobertas, letra_palpite):
+    """
+    Lógica modular: percorre a palavra e atualiza o progresso se a letra existir.
+    """
+    acerto = False
+    for i in range(len(palavra_secreta)):
+        if palavra_secreta[i] == letra_palpite:
+            letras_descobertas[i] = letra_palpite
+            acerto = True
+    return acerto
+
+def jogar_forca():
+    # Setup inicial do Júnior
+    palavras = ["teclado", "monitor", "software", "backend", "algoritmo"]
+    palavra_secreta = random.choice(palavras).lower()
+    letras_descobertas = ["_" for _ in palavra_secreta]
+    
+    tentativas_restantes = 6
+    letras_erradas = []
+
+    print("--- BEM-VINDO AO JOGO DA FORCA ---")
+
+    while tentativas_restantes > 0 and "_" in letras_descobertas:
+        print(f"\nPalavra: {' '.join(letras_descobertas)}")
+        print(f"Erros: {letras_erradas}")
+        print(f"Chances: {tentativas_restantes}")
+
+        chute = input("Qual letra você quer tentar? ").lower().strip()
+
+        # Validações rápidas
+        if len(chute) != 1 or not chute.isalpha():
+            print(">> Ei, digite apenas UMA letra!")
+            continue
+        
+        if chute in letras_descobertas or chute in letras_erradas:
+            print(f">> Você já tentou a letra '{chute}'. Tente outra!")
+            continue
+
+        # Usando a função modular que criamos
+        if verificar_letra(palavra_secreta, letras_descobertas, chute):
+            print(f"Boa! A letra '{chute}' está na palavra.")
+        else:
+            letras_erradas.append(chute)
+            tentativas_restantes -= 1
+            print(f"Xii... a letra '{chute}' não existe.")
+
+    # Mensagens de encerramento
+    if "_" not in letras_descobertas:
+        print(f"\nMandou bem! Você adivinhou: {palavra_secreta}")
+    else:
+        print("\n" + "!" * 20)
+        print("ACABOU SUAS CHANCES")
+        print(f"A palavra era: {palavra_secreta}")
+        print("!" * 20)
+
+if __name__ == "__main__":
+    jogar_forca()
+    
