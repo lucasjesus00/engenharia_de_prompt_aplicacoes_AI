@@ -1,0 +1,45 @@
+# Calculadora Simples - Versão Júnior
+# Objetivo: Realizar as 4 operações básicas
+
+print("="*30)
+print("  MINHA PRIMEIRA CALCULADORA  ")
+print("="*30)
+
+# 1. Entrada de dados
+num1 = float(input("Digite o primeiro número: "))
+num2 = float(input("Digite o segundo número: "))
+
+print("\nEscolha a operação:")
+print(" + | Soma")
+print(" - | Subtração")
+print(" * | Multiplicação")
+print(" / | Divisão")
+
+operacao = input("\nQual operação deseja realizar? ")
+
+# 2. Lógica das operações
+if operacao == "+":
+    resultado = num1 + num2
+    print(f"\nResultado: {num1} + {num2} = {resultado}")
+
+elif operacao == "-":
+    resultado = num1 - num2
+    print(f"\nResultado: {num1} - {num2} = {resultado}")
+
+elif operacao == "*":
+    resultado = num1 * num2
+    print(f"\nResultado: {num1} * {num2} = {resultado}")
+
+elif operacao == "/":
+    # Tratando a divisão por zero (importante!)
+    if num2 == 0:
+        print("\nErro: Não é possível dividir por zero!")
+    else:
+        resultado = num1 / num2
+        print(f"\nResultado: {num1} / {num2} = {resultado}")
+
+else:
+    print("\nOpção inválida! Tente rodar o programa de novo.")
+
+print("\n" + "="*30)
+print("        Fim do Programa       ")
