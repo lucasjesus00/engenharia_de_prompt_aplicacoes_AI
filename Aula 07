@@ -198,6 +198,47 @@ def jogar_forca():
 if __name__ == "__main__":
     jogar_forca()
 
+# Mini Projeto API de consulta de CEP
+
+import requests  # Biblioteca para fazer requisições HTTP
+
+# Função para consultar o CEP
+def consultar_cep(cep):
+    # URL com ERRO INTENCIONAL (faltando uma letra em "viacep")
+    url = "https://viacp.com.br/ws/" + cep + "/json/"
+    
+    try:
+        # Faz a requisição para a API
+        response = requests.get(url)
+        
+        # Verifica se houve erro HTTP (ex: 404, 500)
+        response.raise_for_status()
+        
+        # Converte a resposta para JSON
+        dados = response.json()
+        
+        # Exibe os dados formatados
+        print("CEP: " + dados.get("cep", "N/A"))
+        print("Logradouro: " + dados.get("logradouro", "N/A"))
+        print("Bairro: " + dados.get("bairro", "N/A"))
+        print("Cidade: " + dados.get("localidade", "N/A"))
+        print("Estado: " + dados.get("uf", "N/A"))
+
+    except requests.exceptions.RequestException as erro:
+        # Captura erros de conexão, URL inválida, etc.
+        print("Erro ao acessar a API: " + str(erro))
+        
+        # Simulação de análise por IA (tipo Replit)
+        print("\n[IA] Diagnóstico:")
+        print("- Possível erro na URL da API.")
+        print("- Verifique se o endereço está correto.")
+        print("- Sugestão: usar 'https://viacep.com.br/ws/CEP/json/'")
+
+# Entrada do usuário
+cep_usuario = input("Digite o CEP (somente números): ")
+
+# Chamada da função
+consultar_cep(cep_usuario)
 #Atividade 02
 
 #Aula 07: Número Primo, Nome: Lucas Jesus#
