@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +7,7 @@
     <title>ChatBot FAQ - Guia para Calouros 🎓</title>
     
     <style>
-        /* ========== VARIÁVEIS E RESET ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ========== VARIÁVEIS DE TEMA ========== */
         :root {
             --roxo-principal: #7C3AED;
             --roxo-escuro: #6D28D9;
@@ -29,6 +23,29 @@
             --sombra-grande: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
+        /* ========== TEMA ESCURO ========== */
+        html[data-theme="dark"] {
+            --roxo-principal: #8B5CF6;
+            --roxo-escuro: #7C3AED;
+            --roxo-claro: #A78BFA;
+            --dourado: #FBBF24;
+            --dourado-escuro: #F59E0B;
+            --branco: #0F172A;
+            --cinza-claro: #1E293B;
+            --cinza-medio: #334155;
+            --cinza-escuro: #E2E8F0;
+            --texto-principal: #F1F5F9;
+            --sombra: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --sombra-grande: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ========== RESET ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -38,6 +55,45 @@
             line-height: 1.6;
             color: var(--texto-principal);
             background: linear-gradient(135deg, #f5f5f5 0%, #f0f0f0 100%);
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html[data-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        /* ========== EFEITO DE TRANSIÇÃO ========== */
+        body.theme-transitioning {
+            position: relative;
+        }
+
+        body.theme-transitioning::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+            animation: themeFlash 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            z-index: 9999;
+        }
+
+        @keyframes themeFlash {
+            0% {
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            50% {
+                opacity: 1;
+                backdrop-filter: blur(2px);
+            }
+            100% {
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
         }
 
         /* ========== HEADER ========== */
@@ -49,6 +105,8 @@
             top: 0;
             z-index: 100;
             box-shadow: var(--sombra-grande);
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         nav {
@@ -68,11 +126,13 @@
             font-weight: bold;
             text-decoration: none;
             color: var(--branco);
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .logo span {
             color: var(--dourado);
             font-size: 2rem;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-menu {
@@ -136,6 +196,49 @@
             transform: rotate(-45deg) translate(7px, -7px);
         }
 
+        /* ========== BOTÃO DE TEMA ========== */
+        .theme-toggle {
+            background: transparent;
+            border: 2px solid var(--branco);
+            color: var(--branco);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--dourado);
+            border-color: var(--dourado);
+            color: var(--roxo-principal);
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        .theme-toggle.active {
+            animation: themePulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes themePulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
         /* ========== HERO ========== */
         .hero {
             background: linear-gradient(135deg, var(--roxo-principal) 0%, var(--roxo-escuro) 50%, var(--dourado) 100%);
@@ -144,6 +247,17 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            border-radius: 10px;
+            margin: 2rem auto;
+            max-width: 1200px;
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.3);
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-radius 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html[data-theme="dark"] .hero {
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.5);
         }
 
         .hero::before {
@@ -156,6 +270,7 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             animation: float 6s ease-in-out infinite;
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes float {
@@ -175,12 +290,15 @@
             margin-bottom: 1rem;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        text-shadow 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hero p {
             font-size: 1.3rem;
             margin-bottom: 2rem;
             opacity: 0.95;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn {
@@ -191,7 +309,7 @@
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid var(--dourado);
             cursor: pointer;
             font-size: 1rem;
@@ -230,6 +348,8 @@
             padding: 4rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         section h2 {
@@ -239,6 +359,7 @@
             text-align: center;
             position: relative;
             padding-bottom: 1rem;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         section h2::after {
@@ -251,6 +372,7 @@
             height: 4px;
             background: linear-gradient(90deg, var(--roxo-principal), var(--dourado));
             border-radius: 2px;
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========== FEATURES ========== */
@@ -266,7 +388,7 @@
             padding: 2rem;
             border-radius: 15px;
             box-shadow: var(--sombra);
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             border-left: 5px solid var(--roxo-principal);
         }
 
@@ -279,17 +401,20 @@
         .feature-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .feature-card h3 {
             color: var(--roxo-principal);
             margin-bottom: 1rem;
             font-size: 1.3rem;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .feature-card p {
             color: var(--cinza-escuro);
             line-height: 1.8;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========== FAQ INTERATIVO ========== */
@@ -304,7 +429,7 @@
             border-radius: 10px;
             box-shadow: var(--sombra);
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .faq-item:hover {
@@ -321,7 +446,7 @@
             align-items: center;
             font-weight: 600;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .faq-question:hover {
@@ -341,7 +466,7 @@
             padding: 0 1.5rem;
             max-height: 0;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--cinza-claro);
         }
 
@@ -353,6 +478,7 @@
         .faq-answer p {
             color: var(--cinza-escuro);
             line-height: 1.8;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========== CHAT SIMULADO ========== */
@@ -372,6 +498,7 @@
             display: flex;
             flex-direction: column;
             height: 500px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chat-header {
@@ -382,6 +509,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chat-messages {
@@ -391,6 +519,8 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            background: var(--branco);
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .message {
@@ -399,6 +529,7 @@
             max-width: 80%;
             word-wrap: break-word;
             animation: slideIn 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes slideIn {
@@ -429,6 +560,8 @@
             padding: 1rem;
             gap: 0.5rem;
             border-top: 2px solid var(--cinza-medio);
+            background: var(--branco);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chat-input input {
@@ -437,7 +570,14 @@
             border: 2px solid var(--cinza-medio);
             border-radius: 25px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            background: var(--branco);
+            color: var(--texto-principal);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chat-input input::placeholder {
+            color: var(--cinza-escuro);
+            opacity: 0.6;
         }
 
         .chat-input input:focus {
@@ -453,7 +593,7 @@
             border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chat-input button:hover,
@@ -469,11 +609,13 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chat-info h3 {
             color: var(--roxo-principal);
             font-size: 1.3rem;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .info-item {
@@ -481,10 +623,12 @@
             background: var(--branco);
             border-left: 4px solid var(--dourado);
             border-radius: 5px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .info-item strong {
             color: var(--roxo-principal);
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========== ESTATÍSTICAS ========== */
@@ -501,7 +645,7 @@
             background: var(--branco);
             border-radius: 15px;
             box-shadow: var(--sombra);
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .stat-card:hover {
@@ -516,11 +660,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .stat-label {
             color: var(--cinza-escuro);
             font-size: 1rem;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========== FOOTER ========== */
@@ -529,6 +675,7 @@
             color: var(--branco);
             padding: 3rem 2rem 1rem;
             margin-top: 4rem;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .footer-content {
@@ -543,6 +690,7 @@
         .footer-section h3 {
             color: var(--dourado);
             margin-bottom: 1rem;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .footer-section a {
@@ -550,7 +698,7 @@
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             margin-bottom: 0.5rem;
-            transition: color 0.3s ease;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .footer-section a:hover {
@@ -572,7 +720,7 @@
             border-radius: 50%;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             margin-bottom: 0;
         }
 
@@ -586,6 +734,7 @@
             border-top: 2px solid rgba(255, 255, 255, 0.2);
             padding-top: 2rem;
             color: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========== SCROLL TO TOP ========== */
@@ -605,7 +754,7 @@
             justify-content: center;
             font-size: 1.5rem;
             box-shadow: var(--sombra-grande);
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 99;
         }
 
@@ -617,6 +766,55 @@
 
         .scroll-top.show {
             display: flex;
+        }
+
+        /* ========== FORMULÁRIO DE CONTATO ========== */
+        .contact-form-wrapper {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: var(--branco);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--sombra-grande);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--roxo-principal);
+            font-weight: 600;
+            transition: color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--cinza-medio);
+            border-radius: 5px;
+            font-size: 1rem;
+            background: var(--branco);
+            color: var(--texto-principal);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--cinza-escuro);
+            opacity: 0.6;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--roxo-principal);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
         /* ========== RESPONSIVIDADE ========== */
@@ -646,6 +844,10 @@
                 display: flex;
             }
 
+            .theme-toggle {
+                margin-right: 0.5rem;
+            }
+
             .hero h1 {
                 font-size: 2rem;
             }
@@ -673,15 +875,13 @@
             section h2 {
                 font-size: 2rem;
             }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
         }
 
         @media (max-width: 480px) {
             .hero {
                 padding: 3rem 1rem;
+                margin: 1rem auto;
+                border-radius: 10px;
             }
 
             .hero h1 {
@@ -710,6 +910,12 @@
 
             .stat-number {
                 font-size: 2rem;
+            }
+
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
             }
         }
 
@@ -750,17 +956,22 @@
             <a href="#home" class="logo">
                 <span>🎓</span> ChatBot FAQ
             </a>
-            <ul class="nav-menu">
-                <li><a href="#home">Início</a></li>
-                <li><a href="#features">Recursos</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#chat">Chat</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" title="Alternar tema">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#features">Recursos</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#chat">Chat</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </nav>
     </header>
@@ -847,7 +1058,7 @@
                     <span class="faq-toggle">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <p>O processo de matrícula acontece em duas etapas: Primeira, você acessa o portal acadêmico com suas credenciais. Segunda, seleciona as disciplinas disponíveis para seu curso, confirma a seleção e efetua o pagamento. Você receberá um comprovante de matrícula por email.</p>
+                    <p>O processo de matrícula acontece em duas etapas: Primeira, você acessa o portal acadêmico com suas credenciais. Segunda, seleciona as disciplinas disponíveis para seu curso, respeitando os pré-requisitos.</p>
                 </div>
             </div>
 
@@ -857,7 +1068,7 @@
                     <span class="faq-toggle">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <p>A biblioteca funciona de segunda a sexta, de 08:00 às 22:00. Sábados de 09:00 às 18:00. Domingos a biblioteca permanece fechada. Temos mais de 50 mil livros e estações de estudo para todos os alunos.</p>
+                    <p>A biblioteca funciona de segunda a sexta, de 08:00 às 22:00. Sábados de 09:00 às 18:00. Domingos a biblioteca permanece fechada. Temos mais de 50 mil livros e estações de trabalho.</p>
                 </div>
             </div>
 
@@ -867,7 +1078,7 @@
                     <span class="faq-toggle">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <p>Acesse www.universidade.edu.br/portal. Use seu RA (Registro Acadêmico) como usuário e sua data de nascimento como senha inicial. Recomendamos alterar a senha na primeira conexão. Se tiver dificuldades, entre em contato com o TI.</p>
+                    <p>Acesse www.universidade.edu.br/portal. Use seu RA (Registro Acadêmico) como usuário e sua data de nascimento como senha inicial. Recomendamos alterar a senha na primeira conexão.</p>
                 </div>
             </div>
 
@@ -877,7 +1088,7 @@
                     <span class="faq-toggle">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <p>Oferecemos bolsas acadêmicas, auxílio moradia, auxílio alimentação, bolsas de pesquisa e programas de trabalho-estudo. Todos os calouros podem se inscrever. Confira os critérios de elegibilidade no departamento de assistência estudantil.</p>
+                    <p>Oferecemos bolsas acadêmicas, auxílio moradia, auxílio alimentação, bolsas de pesquisa e programas de trabalho-estudo. Todos os calouros podem se inscrever.</p>
                 </div>
             </div>
 
@@ -887,7 +1098,7 @@
                     <span class="faq-toggle">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <p>O centro fica no prédio A, segundo andar, sala A-201. Oferecemos atendimento psicológico, orientação acadêmica, atividades de bem-estar e grupos de suporte. Agende sua primeira consulta pelo portal ou presencialmente.</p>
+                    <p>O centro fica no prédio A, segundo andar, sala A-201. Oferecemos atendimento psicológico, orientação acadêmica, atividades de bem-estar e grupos de suporte.</p>
                 </div>
             </div>
 
@@ -897,7 +1108,7 @@
                     <span class="faq-toggle">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <p>Existem mais de 40 grupos estudantis na universidade! As inscrições acontecem na primeira semana de aula. Você pode encontrar mesas na praça central ou acessar a lista completa no portal. Não há custo para participar!</p>
+                    <p>Existem mais de 40 grupos estudantis na universidade! As inscrições acontecem na primeira semana de aula. Você pode encontrar mesas na praça central ou acessar a lista completa no portal.</p>
                 </div>
             </div>
         </div>
@@ -953,21 +1164,21 @@
     <!-- ========== CONTATO ========== -->
     <section id="contato">
         <h2>Entre em Contato</h2>
-        <div style="max-width: 600px; margin: 2rem auto; background: var(--branco); padding: 2rem; border-radius: 15px; box-shadow: var(--sombra-grande);">
+        <div class="contact-form-wrapper">
             <form id="contactForm" onsubmit="handleFormSubmit(event)">
-                <div style="margin-bottom: 1.5rem;">
-                    <label for="name" style="display: block; margin-bottom: 0.5rem; color: var(--roxo-principal); font-weight: 600;">Nome</label>
-                    <input type="text" id="name" required placeholder="Seu nome" style="width: 100%; padding: 0.75rem; border: 2px solid var(--cinza-medio); border-radius: 5px; font-size: 1rem;">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" required placeholder="Seu nome">
                 </div>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <label for="email" style="display: block; margin-bottom: 0.5rem; color: var(--roxo-principal); font-weight: 600;">Email</label>
-                    <input type="email" id="email" required placeholder="Seu email" style="width: 100%; padding: 0.75rem; border: 2px solid var(--cinza-medio); border-radius: 5px; font-size: 1rem;">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="Seu email">
                 </div>
 
-                <div style="margin-bottom: 1.5rem;">
-                    <label for="message" style="display: block; margin-bottom: 0.5rem; color: var(--roxo-principal); font-weight: 600;">Mensagem</label>
-                    <textarea id="message" required placeholder="Sua mensagem" rows="5" style="width: 100%; padding: 0.75rem; border: 2px solid var(--cinza-medio); border-radius: 5px; font-size: 1rem; resize: vertical;"></textarea>
+                <div class="form-group">
+                    <label for="message">Mensagem</label>
+                    <textarea id="message" required placeholder="Sua mensagem" rows="5"></textarea>
                 </div>
 
                 <button type="submit" class="btn" style="width: 100%;">Enviar Mensagem</button>
@@ -998,36 +1209,71 @@
             </div>
 
             <div class="footer-section">
-                <h3>Legal</h3>
+                <h3>Suporte</h3>
+                <a href="#contato">Entre em Contato</a>
                 <a href="#">Política de Privacidade</a>
                 <a href="#">Termos de Uso</a>
-                <a href="#">Cookies</a>
-                <a href="#">Conformidade LGPD</a>
-            </div>
-
-            <div class="footer-section">
-                <h3>Suporte</h3>
-                <a href="#">Central de Ajuda</a>
-                <a href="#">Entre em Contato</a>
-                <a href="#">Feedback</a>
-                <a href="#">Reportar Problema</a>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2026 ChatBot FAQ - Desenvolvido com ❤️ para calouros. Todos os direitos reservados.</p>
+            <p>&copy; 2026 ChatBot FAQ. Todos os direitos reservados. Desenvolvido com ❤️ para você.</p>
         </div>
     </footer>
 
     <!-- ========== BOTÃO SCROLL TO TOP ========== -->
-    <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <button class="scroll-top" id="scrollTop" aria-label="Voltar ao topo">↑</button>
 
-    <!-- ========== JAVASCRIPT ========== -->
     <script>
-        // ========== HAMBURGER MENU ==========
-        const hamburger = document.querySelector('.hamburger');
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+        const hamburger = document.getElementById('hamburger');
         const navMenu = document.querySelector('.nav-menu');
 
+        // Carregar tema salvo ou detectar preferência do sistema
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+            setTheme(theme);
+        }
+
+        function setTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            updateThemeIcon(theme);
+        }
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function toggleTheme() {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Adicionar classe de transição
+            document.body.classList.add('theme-transitioning');
+            
+            // Animar botão
+            themeToggle.classList.add('active');
+            
+            // Mudar tema
+            setTheme(newTheme);
+            
+            // Remover classes após animação
+            setTimeout(() => {
+                document.body.classList.remove('theme-transitioning');
+                themeToggle.classList.remove('active');
+            }, 1200);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // ========== HAMBURGER MENU ==========
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
@@ -1042,145 +1288,106 @@
         });
 
         // ========== FAQ INTERATIVO ==========
-        const faqItems = document.querySelectorAll('.faq-item');
-
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            const answer = item.querySelector('.faq-answer');
-            const toggle = item.querySelector('.faq-toggle');
-
+        document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const answer = faqItem.querySelector('.faq-answer');
+                const toggle = question.querySelector('.faq-toggle');
+
                 // Fechar outros FAQs
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.querySelector('.faq-answer').classList.remove('active');
-                        otherItem.querySelector('.faq-toggle').classList.remove('active');
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        item.querySelector('.faq-answer').classList.remove('active');
+                        item.querySelector('.faq-toggle').classList.remove('active');
                     }
                 });
 
-                // Alternar o FAQ clicado
+                // Abrir/fechar FAQ atual
                 answer.classList.toggle('active');
                 toggle.classList.toggle('active');
             });
         });
 
-        // ========== CHAT BOT ==========
-        const chatMessages = document.getElementById('chatMessages');
-        const userInput = document.getElementById('userInput');
-
-        const faqs = {
-            'matrícula': 'O processo de matrícula acontece em duas etapas: acesso ao portal e seleção de disciplinas. Você receberá um comprovante por email.',
-            'biblioteca': 'A biblioteca funciona seg-sex 08:00-22:00, sábado 09:00-18:00. Domingos fechada.',
+        // ========== CHAT SIMULADO ==========
+        const responses = {
+            'matrícula': 'O processo de matrícula é feito online via portal acadêmico. Você precisa fazer login com seu RA e escolher as disciplinas.',
+            'biblioteca': 'A biblioteca funciona de seg-sex 08:00-22:00, sábado 09:00-18:00. Domingos fechada.',
             'portal': 'Acesse www.universidade.edu.br/portal com seu RA e data de nascimento.',
-            'auxílio': 'Oferecemos bolsas, auxílio moradia, alimentação e programas de trabalho-estudo.',
-            'bem-estar': 'Centro de bem-estar no prédio A, 2º andar, sala A-201. Atendimento psicológico disponível.',
-            'grupos': 'Mais de 40 grupos estudantis! Inscrições na primeira semana de aula, gratuito.',
-            'horário': 'Seg-sex 08:00-17:00, sábado 09:00-13:00.',
-            'restaurante': 'O restaurante universitário funciona de seg-sex, 11:00-14:00.',
-            'alojamento': 'Temos alojamentos no campus. Solicite pela assistência estudantil.',
-            'estágio': 'Acesse a central de estágios no portal ou visite a sala de carreira.',
-            'wi-fi': 'Wi-Fi disponível em todo o campus. Use a senha fornecida no seu RA.',
-            'credencial': 'Solicite sua credencial no departamento de identificação, bloco B.',
-            'default': 'Desculpe, não tenho informação sobre isso. Entre em contato com suporte@universidade.edu.br'
+            'auxílio': 'Oferecemos bolsas acadêmicas, auxílio moradia, alimentação e pesquisa.',
+            'bem-estar': 'O centro fica no prédio A, sala A-201. Oferece atendimento psicológico e grupos de suporte.',
+            'grupos': 'Existem 40+ grupos estudantis. Inscrições na primeira semana de aula na praça central.',
+            'padrão': 'Desculpe, não entendi sua pergunta. Pergunte sobre matrícula, biblioteca, portal, auxílio, bem-estar ou grupos estudantis.'
         };
 
-        function addMessage(text, sender) {
-            const message = document.createElement('div');
-            message.className = `message ${sender}`;
-            message.textContent = text;
-            chatMessages.appendChild(message);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function getBotResponse(userMessage) {
-            const lowerMessage = userMessage.toLowerCase();
-            
-            for (const keyword in faqs) {
-                if (lowerMessage.includes(keyword)) {
-                    return faqs[keyword];
-                }
-            }
-            
-            return faqs.default;
-        }
-
         function sendMessage() {
-            const message = userInput.value.trim();
-            
-            if (message === '') return;
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
 
-            addMessage(message, 'user');
-            userInput.value = '';
+            if (!message) return;
 
-            // Simular delay de digitação do bot
+            // Adicionar mensagem do usuário
+            const chatMessages = document.getElementById('chatMessages');
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user';
+            userDiv.textContent = message;
+            chatMessages.appendChild(userDiv);
+
+            // Limpar input
+            input.value = '';
+
+            // Rolar para o fim
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Simular resposta do bot
             setTimeout(() => {
-                const botResponse = getBotResponse(message);
-                addMessage(botResponse, 'bot');
-            }, 800);
+                const lowerMessage = message.toLowerCase();
+                let response = responses['padrão'];
+
+                for (const key in responses) {
+                    if (lowerMessage.includes(key)) {
+                        response = responses[key];
+                        break;
+                    }
+                }
+
+                const botDiv = document.createElement('div');
+                botDiv.className = 'message bot';
+                botDiv.textContent = response;
+                chatMessages.appendChild(botDiv);
+
+                // Rolar para o fim
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
         }
 
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
         });
 
         // ========== SCROLL TO TOP ==========
-        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const scrollTop = document.getElementById('scrollTop');
 
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
-                scrollTopBtn.classList.add('show');
+                scrollTop.classList.add('show');
             } else {
-                scrollTopBtn.classList.remove('show');
+                scrollTop.classList.remove('show');
             }
         });
 
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // ========== ANIMAÇÕES DE ENTRADA ==========
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.feature-card, .stat-card, .faq-item').forEach(el => {
-            observer.observe(el);
+        scrollTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ========== FORM SUBMISSION ==========
+        // ========== FORM SUBMIT ==========
         document.getElementById('contactForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            // Simular envio de formulário
-            console.log('Formulário enviado:', { name, email, message });
-            
-            alert(`Obrigado, ${name}! Sua mensagem foi enviada com sucesso. Você receberá uma resposta em breve no email ${email}.`);
-            
+            alert('Obrigado pelo contato! Em breve retornaremos.');
             document.getElementById('contactForm').reset();
         });
 
-        // ========== INICIALIZAÇÃO ==========
-        console.log('🎓 ChatBot FAQ carregado com sucesso!');
-        console.log('Cores: Roxo (#7C3AED) e Dourado (#F59E0B)');
+        // ========== INICIALIZAR TEMA ==========
+        initTheme();
     </script>
 </body>
 </html>
