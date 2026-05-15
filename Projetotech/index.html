@@ -555,6 +555,45 @@
             color: var(--texto-principal);
         }
 
+        .message.loading {
+            align-self: flex-start;
+            background: var(--cinza-medio);
+            color: var(--texto-principal);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 0.75rem 1rem;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--texto-principal);
+            animation: typing 0.6s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                opacity: 0.5;
+                transform: translateY(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+        }
+
         .chat-input {
             display: flex;
             padding: 1rem;
@@ -600,6 +639,12 @@
         .chat-input button:focus {
             background: var(--dourado-escuro);
             transform: scale(1.05);
+        }
+
+        .chat-input button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1);
         }
 
         .chat-info {
@@ -1120,34 +1165,37 @@
         <div class="chat-demo">
             <div class="chat-window">
                 <div class="chat-header">
-                    💬 ChatBot FAQ
+                    💬 ChatBot FAQ Inteligente
                 </div>
                 <div class="chat-messages" id="chatMessages">
                     <div class="message bot">
-                        Olá! 👋 Bem-vindo ao ChatBot FAQ. Como posso ajudá-lo hoje?
+                        Olá! 👋 Bem-vindo ao ChatBot FAQ. Sou um assistente inteligente que responde a qualquer pergunta sobre a faculdade. O que você gostaria de saber?
                     </div>
                 </div>
                 <div class="chat-input">
-                    <input type="text" id="userInput" placeholder="Digite sua pergunta...">
-                    <button onclick="sendMessage()">Enviar</button>
+                    <input type="text" id="userInput" placeholder="Digite sua pergunta sobre a faculdade...">
+                    <button onclick="sendMessage()" id="sendBtn">Enviar</button>
                 </div>
             </div>
 
             <div class="chat-info">
-                <h3>💡 Dicas de Uso</h3>
+                <h3>💡 Exemplos de Perguntas</h3>
                 <div class="info-item">
-                    <strong>Pergunta natural:</strong> "Qual é o horário da biblioteca?"
+                    <strong>Acadêmicas:</strong> "Como faço minha matrícula?" ou "Qual é a nota de corte?"
                 </div>
                 <div class="info-item">
-                    <strong>Pergunta específica:</strong> "Como faço para me matricular?"
+                    <strong>Localização:</strong> "Onde fica a biblioteca?" ou "Onde é a secretaria?"
                 </div>
                 <div class="info-item">
-                    <strong>Pergunta geral:</strong> "Quais são os auxílios oferecidos?"
+                    <strong>Horários:</strong> "Que horas a biblioteca abre?" ou "Qual o horário de atendimento?"
                 </div>
                 <div class="info-item">
-                    <strong>Localização:</strong> "Onde fica a biblioteca?"
+                    <strong>Programas:</strong> "Quais bolsas vocês oferecem?" ou "Como entrar em um grupo estudantil?"
                 </div>
-                <h3 style="margin-top: 2rem;">📞 Fale Conosco</h3>
+                <div class="info-item">
+                    <strong>Bem-estar:</strong> "Onde fico atendimento psicológico?" ou "Como agendo uma consulta?"
+                </div>
+                <h3 style="margin-top: 2rem;">📞 Fale Conosco Presencialmente</h3>
                 <div class="info-item">
                     <strong>Email:</strong> suporte@universidade.edu.br
                 </div>
@@ -1225,6 +1273,97 @@
     <button class="scroll-top" id="scrollTop" aria-label="Voltar ao topo">↑</button>
 
     <script>
+        // ========== BASE DE CONHECIMENTO SOBRE FACULDADE ==========
+        const knowledgeBase = {
+            matrícula: {
+                keywords: ['matrícula', 'matricular', 'inscrição', 'inscrever'],
+                response: 'O processo de matrícula é realizado online através do portal acadêmico (www.universidade.edu.br/portal). Você precisa fazer login com seu RA e data de nascimento, depois selecionar as disciplinas disponíveis para seu curso. Certifique-se de respeitar os pré-requisitos. Qualquer dúvida, procure a secretaria acadêmica no Bloco A, Sala 101.'
+            },
+            biblioteca: {
+                keywords: ['biblioteca', 'livros', 'sala de estudos', 'computadores na biblioteca', 'estações de trabalho'],
+                response: 'A biblioteca funciona de segunda a sexta de 08:00 às 22:00, sábados de 09:00 às 18:00 e permanece fechada aos domingos. Contamos com mais de 50 mil livros, salas de estudos em grupo, computadores e estações de trabalho disponíveis para todos os alunos. Apresente sua carteirinha estudantil para ter acesso completo.'
+            },
+            portal: {
+                keywords: ['portal acadêmico', 'portal', 'acessar portal', 'login', 'senha'],
+                response: 'Para acessar o portal acadêmico, visite www.universidade.edu.br/portal. Use seu RA (Registro Acadêmico) como nome de usuário e sua data de nascimento no formato DD/MM/AAAA como senha inicial. Após primeiro acesso, é altamente recomendado alterar sua senha por motivos de segurança. Se tiver problemas, entre em contato com a secretaria.'
+            },
+            bolsas: {
+                keywords: ['bolsa', 'auxílio', 'auxílio moradia', 'auxílio alimentação', 'bolsa de pesquisa', 'programa trabalho-estudo', 'financeiro', 'ajuda financeira'],
+                response: 'Oferecemos diversos programas de auxílio: bolsas acadêmicas por desempenho, auxílio moradia para alunos que moram longe, auxílio alimentação, bolsas de pesquisa e iniciação científica, além de programas de trabalho-estudo. Todos os calouros podem se inscrever. Visite o Centro de Bem-estar no Bloco A para mais informações e inscrições.'
+            },
+            bemEstar: {
+                keywords: ['bem-estar', 'psicológico', 'psicologia', 'atendimento psicológico', 'orientação', 'saúde mental', 'suporte'],
+                response: 'O Centro de Bem-estar Estudantil fica no Bloco A, segundo andar, sala A-201. Oferecemos atendimento psicológico gratuito, orientação acadêmica, atividades de bem-estar (yoga, meditação), grupos de suporte, e acolhimento para alunos em dificuldades. Você pode agendar uma consulta presencialmente ou ligar para (11) 3000-0000.'
+            },
+            grupos: {
+                keywords: ['grupo estudantil', 'grupos estudantis', 'centro acadêmico', 'associações', 'participar', 'inscrição grupos'],
+                response: 'Temos mais de 40 grupos estudantis ativos na universidade, cobrindo esportes, cultura, tecnologia, voluntariado e muito mais! As inscrições acontecem na primeira semana de aula. Você encontrará mesas de informação na praça central do campus. Também pode consultar a lista completa de grupos no portal acadêmico. Junte-se ao que mais te interessa!'
+            },
+            horários: {
+                keywords: ['horário', 'qual hora', 'que horas', 'aberto', 'fechado', 'atendimento'],
+                response: 'Os horários variam conforme a estrutura: Secretaria (Bloco A, Sala 101): seg-sex 08:00-17:00. Biblioteca: seg-sex 08:00-22:00, sábado 09:00-18:00. Centro de Bem-estar: seg-sex 09:00-18:00. Refeitório: 11:30-13:30 e 18:00-19:30. Para informações específicas de um local, ligue para (11) 3000-0000.'
+            },
+            localizacao: {
+                keywords: ['onde fica', 'onde é', 'localização', 'sala', 'bloco', 'prédio', 'localiza-se'],
+                response: 'O campus é dividido em blocos: Bloco A - Administração, Secretaria e Bem-estar. Bloco B - Salas de aula (Cursos A-M). Bloco C - Salas de aula (Cursos N-Z). Bloco D - Laboratórios. Bloco E - Biblioteca. Bloco F - Refeitório. Procure pelos mapas informativos em pontos estratégicos do campus ou visite a secretaria para maiores detalhes.'
+            },
+            disciplinas: {
+                keywords: ['disciplina', 'matéria', 'curso', 'aula', 'professor', 'pré-requisito', 'créditos'],
+                response: 'Todas as informações sobre disciplinas, professores, horários de aula e pré-requisitos estão disponíveis no portal acadêmico. Você pode filtrar por semestre, curso ou período. Se uma disciplina tem pré-requisito, você precisa ter cursado a disciplina anterior com aprovação. Fale com seu orientador acadêmico se tiver dúvidas específicas sobre sua grade.'
+            },
+            documentos: {
+                keywords: ['documento', 'certidão', 'histórico', 'declaração', 'comprovante', 'carteirinha', 'carteira estudantil'],
+                response: 'Documentos como histórico escolar, declarações de matrícula e certidões podem ser solicitados na secretaria acadêmica (Bloco A, Sala 101). A carteirinha estudantil é emitida no primeiro dia de aula. Muitos documentos também podem ser gerados digitalmente através do portal acadêmico. Prazo de emissão: até 5 dias úteis.'
+            },
+            alimentacao: {
+                keywords: ['refeitório', 'comida', 'refeição', 'almoço', 'janta', 'café', 'alimentação'],
+                response: 'O refeitório fica no Bloco F e funciona de segunda a sexta, oferecendo almoço de 11:30 a 13:30 e janta de 18:00 a 19:30. Os preços são subsididos para alunos. Você pode consultar cardápio na secretaria ou portal. Também temos bares e máquinas de café distribuídas pelos blocos.'
+            },
+            tecnologia: {
+                keywords: ['wi-fi', 'internet', 'computador', 'laboratório', 'tecnologia', 'rede', 'conectar-se'],
+                response: 'A universidade oferece Wi-Fi em todo o campus. Use sua matrícula como usuário e sua data de nascimento como senha. Temos laboratórios de informática nos Blocos D e E, abertos seg-sex 08:00-22:00. Para problemas técnicos, procure o suporte da TI no Bloco A, segundo andar.'
+            },
+            eventos: {
+                keywords: ['evento', 'palestra', 'seminário', 'congresso', 'atividade', 'programação', 'agenda'],
+                response: 'Os eventos e atividades acadêmicas são divulgados no portal, redes sociais da universidade e nos murais do campus. Geralmente há palestras, workshops e seminários toda semana. Fique atento à primeira semana de aula para a programação de calouros. Você pode se inscrever na maioria dos eventos através do portal.'
+            },
+            vespertino: {
+                keywords: ['período vespertino', 'noturno', 'turma', 'turno', 'horário aula'],
+                response: 'Oferecemos cursos em diferentes turnos. Manhã: 07:30-12:00. Vespertino: 13:00-17:30. Noturno: 18:00-22:40. Ao se matricular, verifique o turno de seu curso no portal. Mudanças de turno devem ser solicitadas à secretaria com justificativa. Consulte seu orientador acadêmico para maiores detalhes.'
+            },
+            deficiência: {
+                keywords: ['deficiência', 'acessibilidade', 'inclusão', 'adaptação', 'necessidade especial', 'acessível'],
+                response: 'Temos compromisso com acessibilidade. O campus possui rampas, elevadores, banheiros adaptados e assentos reservados. Se você tem necessidades especiais, procure o Centro de Bem-estar para providenciar adaptações nas avaliações e materiais. Todos merecem igualdade de oportunidades na educação.'
+            }
+        };
+
+        // ========== FUNÇÃO DE PROCESSAMENTO INTELIGENTE DO CHAT ==========
+        function processUserMessage(message) {
+            const lowerMessage = message.toLowerCase().trim();
+            
+            // Remover pontuação para melhor matching
+            const cleanMessage = lowerMessage.replace(/[.,!?;:]/g, '');
+            
+            // Buscar a categoria mais relevante
+            for (const [category, data] of Object.entries(knowledgeBase)) {
+                for (const keyword of data.keywords) {
+                    if (cleanMessage.includes(keyword)) {
+                        return data.response;
+                    }
+                }
+            }
+
+            // Se não encontrar correspondência exata, tentar buscar por palavras relevantes
+            const universityTerms = ['universidade', 'faculdade', 'campus', 'aluno', 'estudante', 'aula', 'professor', 'académico', 'academico'];
+            
+            if (universityTerms.some(term => cleanMessage.includes(term))) {
+                return `Entendo que você tem uma pergunta sobre assuntos universitários! 🎓 Posso ajudar com informações sobre: matrícula, biblioteca, portal acadêmico, bolsas, bem-estar, grupos estudantis, horários, localização, disciplinas, documentos, alimentação, tecnologia, eventos e acessibilidade. Reformule sua pergunta ou seja mais específico(a) para que eu possa ajudar melhor!`;
+            }
+
+            // Resposta padrão genérica
+            return `Desculpe, não entendi completamente sua pergunta. 😊 Sou especializado em perguntas sobre a faculdade. Você pode me perguntar sobre:\n\n📚 Matrícula e disciplinas\n🏫 Localização e horários\n💰 Bolsas e auxílios\n🧠 Bem-estar estudantil\n👥 Grupos e eventos\n📱 Tecnologia e acesso\n📄 Documentos\n🍽️ Alimentação\n♿ Acessibilidade\n\nTente reformular sua pergunta com mais detalhes!`;
+        }
+
         // ========== THEME TOGGLE ==========
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
@@ -1308,22 +1447,16 @@
             });
         });
 
-        // ========== CHAT SIMULADO ==========
-        const responses = {
-            'matrícula': 'O processo de matrícula é feito online via portal acadêmico. Você precisa fazer login com seu RA e escolher as disciplinas.',
-            'biblioteca': 'A biblioteca funciona de seg-sex 08:00-22:00, sábado 09:00-18:00. Domingos fechada.',
-            'portal': 'Acesse www.universidade.edu.br/portal com seu RA e data de nascimento.',
-            'auxílio': 'Oferecemos bolsas acadêmicas, auxílio moradia, alimentação e pesquisa.',
-            'bem-estar': 'O centro fica no prédio A, sala A-201. Oferece atendimento psicológico e grupos de suporte.',
-            'grupos': 'Existem 40+ grupos estudantis. Inscrições na primeira semana de aula na praça central.',
-            'padrão': 'Desculpe, não entendi sua pergunta. Pergunte sobre matrícula, biblioteca, portal, auxílio, bem-estar ou grupos estudantis.'
-        };
-
+        // ========== CHAT INTELIGENTE ==========
         function sendMessage() {
             const input = document.getElementById('userInput');
             const message = input.value.trim();
+            const sendBtn = document.getElementById('sendBtn');
 
             if (!message) return;
+
+            // Desabilitar botão
+            sendBtn.disabled = true;
 
             // Adicionar mensagem do usuário
             const chatMessages = document.getElementById('chatMessages');
@@ -1338,18 +1471,22 @@
             // Rolar para o fim
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Simular resposta do bot
+            // Mostrar indicador de digitação
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message loading';
+            typingDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Simular resposta do bot com processamento inteligente
             setTimeout(() => {
-                const lowerMessage = message.toLowerCase();
-                let response = responses['padrão'];
+                // Remover indicador de digitação
+                typingDiv.remove();
 
-                for (const key in responses) {
-                    if (lowerMessage.includes(key)) {
-                        response = responses[key];
-                        break;
-                    }
-                }
+                // Gerar resposta inteligente
+                const response = processUserMessage(message);
 
+                // Adicionar resposta do bot
                 const botDiv = document.createElement('div');
                 botDiv.className = 'message bot';
                 botDiv.textContent = response;
@@ -1357,11 +1494,18 @@
 
                 // Rolar para o fim
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 500);
+
+                // Reabilitar botão
+                sendBtn.disabled = false;
+                input.focus();
+            }, 1000 + Math.random() * 500); // Delay realista entre 1-1.5s
         }
 
+        // Enviar mensagem ao pressionar Enter
         document.getElementById('userInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
+            if (e.key === 'Enter' && !document.getElementById('sendBtn').disabled) {
+                sendMessage();
+            }
         });
 
         // ========== SCROLL TO TOP ==========
